@@ -5,23 +5,21 @@ type: demo
 level: 3
 ---
 
-
 ##Persisting Data
 
-By now you should have an awesome application that can create instances of a class and display them in the browser. But every time a the page is reloaded, or a new user users the page, those instances are lost. We can persist (save) information. That's where databases come in. A database is just like an excel spreadsheet with columns that store different pieces of information. If we had a Person class that had name, height, and age attributes, our database would have a table called persons that has three different columns, one for each attribute.
+By now you should have an awesome application that can create instances of a class and display them in the browser. But every time the page is reloaded, or a new user uses the page, those instances are lost. We can't persist (save) information yet. That's where databases come in. A database is just like an excel spreadsheet with columns that store different pieces of information. If we had a Person class that had name, height, and age attributes, our database would have a table called persons with three different columns, one for each attribute.
 
 
-###ORM:
-Programming uses lots of acronyms. ORM stands for object relational mapping. We've gotten really good at creating classes, and then instances of those classes. We've even played around with interactions between objects in two different classes, like when we built the jungle or the Sim City project. These relationships between classes becomes really really important when you're setting up a data.
+###ORM
+Programming uses lots of acronyms. ORM stands for object relational mapping. We've gotten really good at creating classes, and then instances of those classes. We've even played around with interactions between objects in two different classes, like when we built the jungle or the Sim City project. These relationships between classes become really really important when you're setting up a database.
 
-There are three different types of relationships between objects:
+We'll be working with three different types of relationships between objects:
 
 * has_many
 * has_one
 * belongs_to
 
-
-The two relationships you'll deal with the most frequenly are `has_many` and `belongs_to`. Let's take our jungle that we built earlier in the semester and build out our Jungle class and Animal class with these types of relationships.
+The two relationships you'll deal with the most frequently are `has_many` and `belongs_to`. Let's take our jungle that we built earlier in the semester and build out our Jungle class and Animal class with these types of relationships.
 
 When we originally built the jungle, there was no clear stated relationship between our Jungle class and our Animal class. We as humans are able to associate that jungle with the animals, and we created methods within our Jungle class to see all the animals, create new animals, etc. But, never once did we declare within the code that the Jungle class was at all related to the Animal class. You can read the code and make that assumption, but that's not at all a best practice. We want our code to be as clear and readable as possible. 
 
@@ -30,10 +28,9 @@ So how can we make these relationships clear? How can we actually state that the
 
 ###ActiveRecord
 
-ActiveRecord is the answer to all of our problems. ActiveRecord is a gem that allows us to establish relationships between classes and is the liason between the code and the database. ActiveRecord is a DSL (domain specific language) so that we can write Ruby methods to save information to our database and pull information from the database.
+ActiveRecord is the answer to all of our problems. ActiveRecord is a gem that allows us to establish relationships between classes and is the liaison between the code and the database. ActiveRecord is a DSL (domain specific language) so that we can write Ruby methods to save information to our database and pull information from the database.
 
 ActiveRecord also allows us to declare specific relationships between classes. Using ActiveRecord, we can explicitly declare a relationship between our Jungle class and our Animal class:
-
 
 ```ruby
 class Jungle
@@ -78,20 +75,42 @@ A rake task is a ruby implementation of something called Make, which automatical
 
 A rake task is basically a method with a little bit of a different syntax. Instead of writing `def` to signify the start of the method, we write `task`. The method name starts with a colon. Let's say we wanted to write a rake task to set off an alarm to wake us up every morning. It would look something like this:
 
-```
+```ruby
 task :wake_up do
   puts "WAKE UP!!!!!"
 end
 ```
 
+In order to use rake tasks we need to set up a Rakefile in our project. Create a Rakefile with `touch Rakefile` in terminal. We'll need to add these lines of code to the Rakefile:
+
+```ruby
+require "./app"
+require "sinatra/activerecord/rake"
+```
+
+To see all the rake tasks available type `rake -T` in terminal. Let's create our jungles table with the following rake task in the terminal: `rake db:create_migration NAME=create_jungles`.
+
+This rake task will create a folder called `migrate` and a file in that folder that starts with a time stamp and the value of `NAME` that you passed in. Inside of this file you'll see a `def change` method. Instead of this method we're going to create two methods `up` and `down`. The `up` method is used to actually create the table in the database. The `down` method is only called if you want to delete that table.
 
 
+Inside the `up` method we need to add this code to create a jungles table. We want our jungle to have the attributes size, name, location and rainfall, so we'll need to create those columns in this table. This is how we do that:
 
+```ruby
+  create_table :jungles do |t|
+    t.string  :size
+    t.string  :name
+    t.string  :location
+    t.integer :rainfall
+  end
+```
 
+We are calling an ActiveRecord method `create_table` to create the table with the name jungles. We are iterating through the table to create columns.  We are using the variable `t` to represent each column. The first thing we have to do is state the data type for the column. Each column can only contain one specific type of data. If you declare a column to hold a string it will store all the data as strings. Following the data type is the name of the column in symbol form. Lastly we need to create the `down` method like this:
 
-what sql is -- sqlite3 databse
+```ruby
+  def down
+    drop_table :posts
+  end
+```
 
+This migration file defines what our table is going to look like but it doesn't actually create the table. To do that we need to use this command in our terminal: `rake db:migrate`. This will execute the up method in our `migration` and create a table with the columns that we've specified.
 
-
-
-db directory
