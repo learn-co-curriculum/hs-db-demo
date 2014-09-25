@@ -53,7 +53,7 @@ In order to create a database, we need to do a few pieces of setup.
 
 In our `Gemfile`, we need to make sure we include the following:
 
-```
+```ruby
   gem "sqlite3"
   gem "activerecord"
   gem "sinatra-activerecord"
@@ -81,7 +81,7 @@ task :wake_up do
 end
 ```
 
-In order to use rake tasks we need to set up a Rakefile in our project. Create a Rakefile with `touch Rakefile` in terminal. We'll need to add these lines of code to the Rakefile:
+In order to use these rake tasks we need to set up a Rakefile in our project. Create a Rakefile with `touch Rakefile` in terminal. We'll need to add these lines of code to the Rakefile:
 
 ```ruby
 require "./app"
@@ -92,8 +92,7 @@ To see all the rake tasks available type `rake -T` in terminal. Let's create our
 
 This rake task will create a folder called `migrate` and a file in that folder that starts with a time stamp and the value of `NAME` that you passed in. Inside of this file you'll see a `def change` method. Instead of this method we're going to create two methods `up` and `down`. The `up` method is used to actually create the table in the database. The `down` method is only called if you want to delete that table.
 
-
-Inside the `up` method we need to add this code to create a jungles table. We want our jungle to have the attributes size, name, location and rainfall, so we'll need to create those columns in this table. This is how we do that:
+We want our jungle to have the attributes size, name, location and rainfall, so we'll need to create those columns in this table. Inside the `up` method we need to add this code to create a jungles table:
 
 ```ruby
   create_table :jungles do |t|
@@ -104,7 +103,9 @@ Inside the `up` method we need to add this code to create a jungles table. We wa
   end
 ```
 
-We are calling an ActiveRecord method `create_table` to create the table with the name jungles. We are iterating through the table to create columns.  We are using the variable `t` to represent each column. The first thing we have to do is state the data type for the column. Each column can only contain one specific type of data. If you declare a column to hold a string it will store all the data as strings. Following the data type is the name of the column in symbol form. Lastly we need to create the `down` method like this:
+We are calling an ActiveRecord method `create_table` to create the table with the name jungles. We are iterating through the table to create columns using the variable `t` to represent each column.  The first thing we have to do is state the data type for the column. Each column can only contain one specific type of data. If you declare a column to hold a string it will store all the data as strings. Following the data type is the name of the column in symbol form. One column that we don't see here, that gets added automatically to the table is an ID column. Each row of our database table will have it's own unique ID number.
+
+Lastly we need to create the `down` method like this:
 
 ```ruby
   def down
@@ -113,4 +114,60 @@ We are calling an ActiveRecord method `create_table` to create the table with th
 ```
 
 This migration file defines what our table is going to look like but it doesn't actually create the table. To do that we need to use this command in our terminal: `rake db:migrate`. This will execute the up method in our `migration` and create a table with the columns that we've specified.
+
+
+###Using our databases
+
+Let's practice by creating an instance of our Jungle class. We do this the same way we always have like this:
+
+```ruby
+amazon = Jungle.new
+amazon.name = "Amazon"
+amazon.location = "Brazil"
+amazon.save!
+```
+
+At this point our `Jungle` class has only one line `has_many :animals`. We haven't defined any reader or writer methods or attribute accessors. So how can we do `name=`? This is a method provided by ActiveRecord. It acts similar to a write method, by assigning a name value to an instance of the Jungle class. It also does one more important thing, when we call `amazon.save!` it adds this value to the name column in the jungles table. For this reason, we can no longer use `attr_accessor`. 
+
+###
+Now let's add an animals tables. We can do this the same way that we added the jungles table but there is one important column that we need to add, a `jungle_id` column. The `has_many` and `belongs_to` associations that we set up in our Jungle and Animal classes will help us set up the relationships between these objects, but they will not work properly without this `jungle_id` column. 
+
+Let's set up a new Jungle and a new Animal:
+
+```ruby
+amazon = Jungle.new
+amazon.name = "Amazon"
+amazon.location = "Brazil"
+amazon.save!
+
+puma = Animal.new
+puma.name = "Puma"
+puma.save!
+```
+Jungle Table:
+
+|  id | name      | location  |
+|---  |---        |    ---    |
+|  1  |  "Amazon" | "Brazil"  | 
+
+Animal Table:
+|  id | name  | jungle_id  | 
+|---  |---    |---         |
+| 1   |   "Puma"|   nil    |
+
+
+If we wanted to make sure that Puma is associated with the Amazon we can make the connection this way:
+
+```ruby
+puma.jungle_id = amazon.id
+```
+
+When we created `amazon` it was automatically assigned a unique ID number.
+
+
+ActiveRecord provides us with the method `jungle_id=` and we use it to assign
+
+There is one important column that we need to add to the 
+
+
 
