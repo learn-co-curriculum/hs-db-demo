@@ -5,6 +5,9 @@ type: demo
 level: 3
 ---
 
+** We have provided a solution to the following walkthrough in the `demo` directory. Please feel free to create your own directory and follow along. **
+
+
 ##Persisting Data
 
 By now you should have an awesome application that can create instances of a class and display them in the browser. But every time the page is reloaded, or a new user uses the page, those instances are lost. We can't persist (save) information yet. That's where databases come in. A database is just like an excel spreadsheet with columns that store different pieces of information. If we had a Person class that had name, height, and age attributes, our database would have a table called persons with three different columns, one for each attribute.
@@ -33,16 +36,18 @@ ActiveRecord is the answer to all of our problems. ActiveRecord is a gem that al
 ActiveRecord also allows us to declare specific relationships between classes. Using ActiveRecord, we can explicitly declare a relationship between our Jungle class and our Animal class:
 
 ```ruby
-class Jungle
+class Jungle < ActiveRecord::Base
   has_many :animals
 end
 
-class Animal
+class Animal < ActiveRecord::Base
   belongs_to :jungle
 end
 ```
 
 These relationships become incredibly important when we want to pull information from our database.
+
+It's also important to state explicitely that each of these two classes inherit from `ActiveRecord::Base`. This gives these classes access to the `has_many` and `belongs_to` associations. If we don't have those, we won't be able to even begin to create our database becuase we're get errors like `undefined method 'has_many' for Jungle:Class`.
 
 
 ###Databases
@@ -165,13 +170,29 @@ puma.jungle_id = amazon.id
 
 When we created `amazon` it was automatically assigned a unique ID number. Because our animals table has a `jungle_id` column, ActiveRecord provides us with the method `jungle_id=` that is available to every instance of our `Animal` class. We use this method to assign the id of the amazon to the animal. 
 
+But where do we call all of these create method's we've been talking about?
+
+
+###Creating Instances From User Input
+All of these methods can be called from within our controller actions. Just like in a get request we can call:
+```
+@puma = Animal.new
+@puma.name = "Puma"
+```
+And then display them in the view. We can also call `@puma.save!` from inside our controller action to save that information in the database. 
+
+###Displaying Information From The DB
+
+Our views now have access to all of the ActiveRecord methods, like `Animal.all` and `Jungle.all`. We can call those methods in our views (in between erb tags) to display data from our database.
 
 ###Tux
 
 All of this is sort of hard to visualize. How can we actually see what's in our database to even make sure we're saving data properly? There is an amazing gem called `tux` which opens up our database in the terminal and allows us to play around and call all sorts of ActiveRecord methdods. To use tux, in the directory where your database is located, you'll want to type `tux`. This command puts you into your database, so no command line commands will work.
 
 If we wanted to see all of the animals we've created, we can call `Animal.all`. And for all the jungles, `Jungle.all`. If we wanted to see the first animal we created `Animal.first`. 
-We can even do things like `Animal.where(:name => "Puma")`, where we're searching for an animal based a value in the name column.
+We can even do things like `Animal.where(:name => "Puma")`, where we're searching for an animal based a value in the name column. You can play around with methods here before attempting them in your views. 
+
+To exit Tux, you just enter `exit`.
 
 You can read more about ActiveRecord queries [here](http://guides.rubyonrails.org/active_record_querying.html).
 
