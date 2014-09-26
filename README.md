@@ -130,9 +130,9 @@ amazon.save!
 At this point our `Jungle` class has only one line `has_many :animals`. We haven't defined any reader or writer methods or attribute accessors. So how can we do `name=`? This is a method provided by ActiveRecord. It acts similar to a write method, by assigning a name value to an instance of the Jungle class. It also does one more important thing, when we call `amazon.save!` it adds this value to the name column in the jungles table. For this reason, we can no longer use `attr_accessor`. 
 
 ###
-Now let's add an animals tables. We can do this the same way that we added the jungles table but there is one important column that we need to add, a `jungle_id` column. The `has_many` and `belongs_to` associations that we set up in our Jungle and Animal classes will help us set up the relationships between these objects, but they will not work properly without this `jungle_id` column. 
+Now let's add an animals tables. We can do this the same way that we added the jungles table but there is one important column that we need to add, a `jungle_id` column. The `has_many` and `belongs_to` associations that we set up in our `Jungle` and `Animal` classes will help us set up the relationships between these objects, but they will not work properly without this `jungle_id` column. 
 
-Let's set up a new Jungle and a new Animal:
+Let's set up a new jungle and a new animal:
 
 ```ruby
 amazon = Jungle.new
@@ -163,12 +163,15 @@ If we wanted to make sure that Puma is associated with the Amazon we can make th
 puma.jungle_id = amazon.id
 ```
 
-When we created `amazon` it was automatically assigned a unique ID number.
+When we created `amazon` it was automatically assigned a unique ID number. Because our animals table has a `jungle_id` column, ActiveRecord provides us with the method `jungle_id=` that is available to every instance of our `Animal` class. We use this method to assign the id of the amazon to the animal. 
 
 
-ActiveRecord provides us with the method `jungle_id=` and we use it to assign
+###Tux
 
-There is one important column that we need to add to the 
+All of this is sort of hard to visualize. How can we actually see what's in our database to even make sure we're saving data properly? There is an amazing gem called `tux` which opens up our database in the terminal and allows us to play around and call all sorts of ActiveRecord methdods. To use tux, in the directory where your database is located, you'll want to type `tux`. This command puts you into your database, so no command line commands will work.
 
+If we wanted to see all of the animals we've created, we can call `Animal.all`. And for all the jungles, `Jungle.all`. If we wanted to see the first animal we created `Animal.first`. 
+We can even do things like `Animal.where(:name => "Puma")`, where we're searching for an animal based a value in the name column.
 
+You can read more about ActiveRecord queries [here](http://guides.rubyonrails.org/active_record_querying.html).
 
