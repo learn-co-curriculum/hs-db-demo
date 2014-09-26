@@ -146,14 +146,14 @@ puma.save!
 ```
 Jungle Table:
 
-|  id | name      | location  |
-|---  |---        |    ---    |
-|  1  |  "Amazon" | "Brazil"  | 
+|id | name| location
+|--- |--- |---
+| 1 | "Amazon" | "Brazil"
 
 Animal Table:
-|  id | name  | jungle_id  | 
-|---  |---    |---         |
-| 1   |   "Puma"|   nil    |
+|  id | name | jungle_id
+|--- |--- |---
+| 1 | "Puma"| nil
 
 
 If we wanted to make sure that Puma is associated with the Amazon we can make the connection this way:
