@@ -151,7 +151,7 @@ Jungle Table:
 | 1 | "Amazon" | "Brazil"
 
 Animal Table:
-|  id | name | jungle_id
+| id | name | jungle_id
 |--- |--- |---
 | 1 | "Puma"| nil
 
