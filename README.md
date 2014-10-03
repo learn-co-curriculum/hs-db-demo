@@ -10,11 +10,12 @@ level: 3
 
 ##Persisting Data
 
-By now you should have an awesome application that can create instances of a class and display them in the browser. But every time the page is reloaded, or a new user uses the page, those instances are lost. We can't persist (save) information yet. That's where databases come in. A database is just like an excel spreadsheet with columns that store different pieces of information. If we had a Person class that had name, height, and age attributes, our database would have a table called persons with three different columns, one for each attribute.
+By now you should have an awesome application that can create instances of a class and display them in the browser. But every time the page is reloaded, or a new user uses the page, those instances are lost. We can't persist (save) information yet. That's where databases come in. A `database` is just like an excel spreadsheet with columns that store different pieces of information. If we had a Person class that had name, height, and age attributes, our database would have a table called persons with three different columns, one for each attribute.
 
 
 ###ORM
-Programming uses lots of acronyms. ORM stands for object relational mapping. We've gotten really good at creating classes, and then instances of those classes. We've even played around with interactions between objects in two different classes, like when we built the jungle or the Sim City project. These relationships between classes become really really important when you're setting up a database.
+
+Programming uses lots of acronyms. `ORM` stands for `Object Relational Mapping`. We've gotten really good at creating classes, and then instances of those classes. We've even played around with interactions between objects in two different classes, like when we built the jungle or the Sim City project. These relationships between classes become really, really important when you're setting up a database.
 
 We'll be working with three different types of relationships between objects:
 
@@ -24,7 +25,7 @@ We'll be working with three different types of relationships between objects:
 
 The two relationships you'll deal with the most frequently are `has_many` and `belongs_to`. Let's take our jungle that we built earlier in the semester and build out our Jungle class and Animal class with these types of relationships.
 
-When we originally built the jungle, there was no clear stated relationship between our Jungle class and our Animal class. We as humans are able to associate that jungle with the animals, and we created methods within our Jungle class to see all the animals, create new animals, etc. But, never once did we declare within the code that the Jungle class was at all related to the Animal class. You can read the code and make that assumption, but that's not at all a best practice. We want our code to be as clear and readable as possible. 
+When we originally built the jungle, there was no clear stated relationship between our Jungle class and our Animal class. We as humans are able to associate that jungle with the animals, and we created methods within our Jungle class to see all the animals, create new animals, etc. But, never once did we declare within the code that the Jungle class was at all related to the Animal class. You can read the code and make that assumption, but that's not a best practice. We want our code to be as clear and readable as possible. 
 
 So how can we make these relationships clear? How can we actually state that the jungle has animals, and animals live inside the jungle?
 
@@ -47,12 +48,12 @@ end
 
 These relationships become incredibly important when we want to pull information from our database.
 
-It's also important to state explicitely that each of these two classes inherit from `ActiveRecord::Base`. This gives these classes access to the `has_many` and `belongs_to` associations. If we don't have those, we won't be able to even begin to create our database becuase we're get errors like `undefined method 'has_many' for Jungle:Class`.
+It's also important to state explicitly that each of these two classes inherit from `ActiveRecord::Base`. This gives these classes access to the `has_many` and `belongs_to` associations. If we don't have those, we won't be able to even begin to create our database because we're get errors like `undefined method 'has_many' for Jungle:Class`.
 
 
 ###Databases
 
-We're going to be using a SQLite3 database, which is a collection of tables. Each table corresponds to a model in our application. In the case of the jungle, we have two models (Jungle and Animal), so we would have two tables one named `jungles` and one named `animals`. The naming convention is important to note. Our class names are **always** singular, but our table names are **always** plural. `class Jungle` relates to table `jungles`. 
+We're going to be using a SQLite3 database, which is a collection of tables. Each table corresponds to a model in our application. In the case of the jungle, we have two models (Jungle and Animal), so we would have two tables: one named `jungles` and one named `animals`. The naming convention is important to note. Our class names are **always** singular, but our table names are **always** plural. `class Jungle` relates to table `jungles`. 
 
 In order to create a database, we need to do a few pieces of setup.
 
@@ -67,7 +68,7 @@ In our `Gemfile`, we need to make sure we include the following:
 
 In `app.rb`, we need to set up a connection to our database: `set :database, "sqlite3:name_of_database.db"`. This line is telling our application to connect to a database with a specific name. Until this application is hosted on a server, your local database will just be a file saved in the directory of your application with the file extension `db`. You do have to manually create the database file. 
 
-In terminal, enter `touch name_of_database.rb`. You'll want to name your database something related to the topic of your application. In the case of the jungle application, you could name your database `jungle.db`. If you had an application that told you the weather, you could have `weather.db`. It's important to note that name of the database is not the same thing as a the name of a table. A database can have an infinite number of tables.
+In terminal, enter `touch name_of_database.rb`. You'll want to name your database something related to the topic of your application. In the case of the jungle application, you could name your database `jungle.db`. If you had an application that told you the weather, you could have `weather.db`. It's important to note that name of the database is not the same thing as the name of a table. A database can have an infinite number of tables.
 
 Lastly, we need to create a `db` directory, which will contain all of the code to create specific tables. In terminal: `mkdir db`.
 
@@ -108,7 +109,7 @@ We want our jungle to have the attributes size, name, location and rainfall, so 
   end
 ```
 
-We are calling an ActiveRecord method `create_table` to create the table with the name jungles. We are iterating through the table to create columns using the variable `t` to represent each column.  The first thing we have to do is state the data type for the column. Each column can only contain one specific type of data. If you declare a column to hold a string it will store all the data as strings. Following the data type is the name of the column in symbol form. One column that we don't see here, that gets added automatically to the table is an ID column. Each row of our database table will have it's own unique ID number.
+We are calling an ActiveRecord method `create_table` to create the table with the name jungles. We are iterating through the table to create columns using the variable `t` to represent each column.  The first thing we have to do is state the data type for the column. Each column can only contain one specific type of data. If you declare a column to hold a string it will store all the data as strings. Following the data type is the name of the column in symbol form. One column that we don't see here that gets added automatically to the table is an ID column. Each row of our database table will have it's own unique ID number.
 
 Lastly we need to create the `down` method like this:
 
@@ -132,7 +133,7 @@ amazon.location = "Brazil"
 amazon.save!
 ```
 
-At this point our `Jungle` class has only one line `has_many :animals`. We haven't defined any reader or writer methods or attribute accessors. So how can we do `name=`? This is a method provided by ActiveRecord. It acts similar to a write method, by assigning a name value to an instance of the Jungle class. It also does one more important thing, when we call `amazon.save!` it adds this value to the name column in the jungles table. For this reason, we can no longer use `attr_accessor`. 
+At this point our `Jungle` class has only one line: `has_many :animals`. We haven't defined any reader or writer methods or attribute accessors. So how can we do `name=`? This is a method provided by ActiveRecord. It acts similar to a write method, by assigning a name value to an instance of the Jungle class. It also does one more important thing, when we call `amazon.save!` it adds this value to the name column in the jungles table. For this reason, we can no longer use `attr_accessor`. 
 
 ###
 Now let's add an animals tables. We can do this the same way that we added the jungles table but there is one important column that we need to add, a `jungle_id` column. The `has_many` and `belongs_to` associations that we set up in our `Jungle` and `Animal` classes will help us set up the relationships between these objects, but they will not work properly without this `jungle_id` column. 
@@ -170,7 +171,7 @@ puma.jungle_id = amazon.id
 
 When we created `amazon` it was automatically assigned a unique ID number. Because our animals table has a `jungle_id` column, ActiveRecord provides us with the method `jungle_id=` that is available to every instance of our `Animal` class. We use this method to assign the id of the amazon to the animal. 
 
-But where do we call all of these create method's we've been talking about?
+But where do we call all of these create methods we've been talking about?
 
 
 ###Creating Instances From User Input
