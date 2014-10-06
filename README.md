@@ -13,12 +13,10 @@ level: 3
 By now you should have an awesome application that can create instances of a class and display them in the browser. But every time the page is reloaded, or a new user uses the page, those instances are lost. We can't persist (save) information yet. That's where databases come in. A database is just like an excel spreadsheet with columns that store different pieces of information. If we had a Person class that had name, height, and age attributes, our database would have a table called persons with three different columns, one for each attribute.
 
 ##Relationships
-We've gotten really good at creating classes, and then instances of those classes. We've even played around with interactions between objects in two different classes, like when we built the jungle or the Sim City project. These relationships between classes become really really important when you're setting up a database. Stating relationships between objects are a powerful way to mimic the real world in code in order to better organize our data.
+We've gotten really good at creating classes, and then instances of those classes. We've even played around with interactions between objects in two different classes, like when we built the jungle or the Sim City project. These relationships between classes become really really important when you're setting up a database. Stating relationships between objects are a powerful way to mimic the real world in code in order to better organize our data. Let's take a real world example we all know, a mother and her 3 children. A mother would say she *has* three kids. Each of those three kids would *belong to* their mother. There is an awesome way to explicitly state those relationships in our code. 
 
 ###ORM
-Programming uses lots of acronyms. ORM stands for object relational mapping. 
-
-Programming uses lots of acronyms. `ORM` stands for `Object Relational Mapping`. We've gotten really good at creating classes, and then instances of those classes. We've even played around with interactions between objects in two different classes, like when we built the jungle or the Sim City project. These relationships between classes become really, really important when you're setting up a database.
+Programming uses lots of acronyms. `ORM` stands for `Object Relational Mapping`. 
 
 We'll be working with three different types of relationships between objects:
 
