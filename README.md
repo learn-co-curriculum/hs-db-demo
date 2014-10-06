@@ -5,12 +5,14 @@ type: demo
 level: 3
 ---
 
-** We have provided a solution to the following walkthrough in the `demo` directory. Please feel free to create your own directory and follow along. **
+**We have provided a solution to the following walkthrough in the `demo` directory. Please feel free to create your own directory and follow along.**
 
 
 ##Persisting Data
 
-By now you should have an awesome application that can create instances of a class and display them in the browser. But every time the page is reloaded, or a new user uses the page, those instances are lost. We can't persist (save) information yet. That's where databases come in. A database is just like an excel spreadsheet with columns that store different pieces of information. If we had a Person class that had name, height, and age attributes, our database would have a table called persons with three different columns, one for each attribute.
+By now you should have an awesome application that can create instances of a class and display them in the browser. But every time the page is reloaded, or a new user uses the page, those instances are lost. We can't persist (save) information yet. That's where databases come in. A database is just like mulitple excel spreadsheets with columns that store different pieces of information. If we had a Person class that had name, height, and age attributes, our database would have a `table` called persons with three different columns, one for each attribute. Each table would be its own sheet in Excel.
+
+Let's take Facebook as a good example. Facebook probably has a users table and a corresponding User class. The attributes of a user would be email, password, name, birthday, school, job...and the list goes on. Think about all the information Facebook lets you fill out. For every piece of information that you enter, there is a column in their database to store it.
 
 ##Relationships
 We've gotten really good at creating classes, and then instances of those classes. We've even played around with interactions between objects in two different classes, like when we built the jungle or the Sim City project. These relationships between classes become really really important when you're setting up a database. Stating relationships between objects are a powerful way to mimic the real world in code in order to better organize our data. Let's take a real world example we all know, a mother and her 3 children. A mother would say she *has* three kids. Each of those three kids would *belong to* their mother. There is an awesome way to explicitly state those relationships in our code. 
@@ -76,7 +78,7 @@ Lastly, we need to create a `db` directory, which will contain all of the code t
 
 ###Creating A Table:
 
-Now that we know we want to have two tables, we need to actually create them. ActiveRecord uses something called migrations (paired with rake tasks) to create the tables.
+Now that we know we want to have two tables, we need to actually create them. ActiveRecord uses something called `migrations` (paired with rake tasks) to create the tables. A migration are a convenient way for you to change your databse in a structured and organized manner. It allows you to create tables, add or remove columns from tables, and even delete tables entirely. 
 
 A rake task is a ruby implementation of something called Make, which automatically builds executable programs from the source code. Ruby uses Rake, and we write our tasks in `Rakefile`.You can read more about Rake [here](http://jasonseifer.com/2010/04/06/rake-tutorial).
 
@@ -131,10 +133,10 @@ Let's practice by creating an instance of our Jungle class. We do this the same 
 amazon = Jungle.new
 amazon.name = "Amazon"
 amazon.location = "Brazil"
-amazon.save!
+amazon.save
 ```
 
-At this point our `Jungle` class has only one line: `has_many :animals`. We haven't defined any reader or writer methods or attribute accessors. So how can we do `name=`? This is a method provided by ActiveRecord. It acts similar to a write method, by assigning a name value to an instance of the Jungle class. It also does one more important thing, when we call `amazon.save!` it adds this value to the name column in the jungles table. For this reason, we can no longer use `attr_accessor`. 
+At this point our `Jungle` class has only one line: `has_many :animals`. We haven't defined any reader or writer methods or attribute accessors. So how can we do `amazon.name=`? This method is a method provided under the hood by ActiveRecord, so we don't need to explicitly state any reader or writer methods. `name=` acts similar to a writer method, by assigning a name value to an instance of the Jungle class. It also does one more important thing, when we call `amazon.save` it adds this value to the name column in the jungles table. For this reason, we can no longer use `attr_accessor`. 
 
 ###
 Now let's add an animals tables. We can do this the same way that we added the jungles table but there is one important column that we need to add, a `jungle_id` column. The `has_many` and `belongs_to` associations that we set up in our `Jungle` and `Animal` classes will help us set up the relationships between these objects, but they will not work properly without this `jungle_id` column. 
@@ -145,11 +147,11 @@ Let's set up a new jungle and a new animal:
 amazon = Jungle.new
 amazon.name = "Amazon"
 amazon.location = "Brazil"
-amazon.save!
+amazon.save
 
 puma = Animal.new
 puma.name = "Puma"
-puma.save!
+puma.save
 ```
 Jungle Table:
 
@@ -181,7 +183,7 @@ All of these methods can be called from within our controller actions. Just like
 @puma = Animal.new
 @puma.name = "Puma"
 ```
-And then display them in the view. We can also call `@puma.save!` from inside our controller action to save that information in the database. 
+And then display them in the view. We can also call `@puma.save` from inside our controller action to save that information in the database. 
 
 ###Displaying Information From The DB
 
