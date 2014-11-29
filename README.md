@@ -5,16 +5,15 @@ type: demo
 level: 3
 ---
 
-** We have provided a solution to the following walkthrough in the `demo` directory. Please feel free to create your own directory and follow along. **
-
-
 ##Persisting Data
+
+**We have provided a solution to the following walkthrough in the `demo` directory. Please feel free to create your own directory and follow along.**
 
 By now you should have an awesome application that can create instances of a class and display them in the browser. But every time the page is reloaded, or a new user uses the page, those instances are lost. We can't persist (save) information yet. That's where databases come in. A database is just like an excel spreadsheet with columns that store different pieces of information. If we had a Person class that had name, height, and age attributes, our database would have a table called persons with three different columns, one for each attribute.
 
 
 ###ORM
-Programming uses lots of acronyms. ORM stands for object relational mapping. We've gotten really good at creating classes, and then instances of those classes. We've even played around with interactions between objects in two different classes, like when we built the jungle or the Sim City project. These relationships between classes become really really important when you're setting up a database.
+Programming uses lots of acronyms. ORM stands for object relational mapping. We've gotten really good at creating classes, and then instances of those classes. We've even played around with interactions between objects in two different classes, like when we built the [jungle](https://github.com/dfenjves/jungle) or the Sim City project. These relationships between classes become really, really important when you're setting up a database.
 
 We'll be working with three different types of relationships between objects:
 
