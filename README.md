@@ -110,13 +110,13 @@ We want our jungle to have the attributes size, name, location and rainfall, so 
   end
 ```
 
-We are calling an ActiveRecord method `create_table` to create the table with the name jungles. We are iterating through the table to create columns using the variable `t` to represent each column.  The first thing we have to do is state the data type for the column. Each column can only contain one specific type of data. If you declare a column to hold a string it will store all the data as strings. Following the data type is the name of the column in symbol form. One column that we don't see here that gets added automatically to the table is an ID column. Each row of our database table will have it's own unique ID number.
+We are calling an ActiveRecord method `create_table` to create the table with the name jungles. We are iterating through the table to create columns using the variable `t` to represent each column.  The first thing we have to do is state the data type for the column. Each column can only contain one specific type of data. If you declare a column to hold a string it will store all the data as strings. Following the data type is the name of the column in symbol form. One column that we don't see here that gets added automatically to the table is an ID column. Each row of our database table will have its own unique ID number.
 
 Lastly we need to create the `down` method like this:
 
 ```ruby
   def down
-    drop_table :posts
+    drop_table :jungles
   end
 ```
 
