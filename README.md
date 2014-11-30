@@ -134,7 +134,7 @@ amazon.location = "Brazil"
 amazon.save
 ```
 
-At this point our `Jungle` class has only one line: `has_many :animals`. We haven't defined any reader or writer methods or attribute accessors. So how can we do `amazon.name=`? This method is a method provided under the hood by ActiveRecord, so we don't need to explicitly state any reader or writer methods. `name=` acts similar to a writer method, by assigning a name value to an instance of the Jungle class. It also does one more important thing, when we call `amazon.save` it adds this value to the name column in the jungles table. For this reason, we can no longer use `attr_accessor`. 
+At this point our `Jungle` class has only one line: `has_many :animals`. We haven't defined any reader or writer methods or attribute accessors. So how can we do `amazon.name=`? This method is a method provided under the hood by ActiveRecord, so we don't need to explicitly state any reader or writer methods. `name=` acts similar to a writer method, by assigning a name value to an instance of the Jungle class. We can also call the reader method `amazon.name` to display the name of the jungle instance in our views. It also does one more important thing, when we call `amazon.save` it adds this value to the name column in the jungles table. For this reason, we can no longer use `attr_accessor`. 
 
 ###
 Now let's add an animals tables. We can do this the same way that we added the jungles table but there is one important column that we need to add, a `jungle_id` column. The `has_many` and `belongs_to` associations that we set up in our `Jungle` and `Animal` classes will help us set up the relationships between these objects, but they will not work properly without this `jungle_id` column. 
@@ -176,23 +176,21 @@ But where do we call all of these create methods we've been talking about?
 
 
 ###Creating Instances From User Input
-All of these methods can be called from within our controller actions. Just like in a get request we can call:
-```
+All of these methods can be called from within our controller actions. To create a new instance of a puma we can add the following code to a route in our application controller:
+```ruby
 @puma = Animal.new
 @puma.name = "Puma"
 ```
-And then display them in the view. We can also call `@puma.save` from inside our controller action to save that information in the database. 
+And then display this instance in the view. We can also call `@puma.save` from inside our controller action to save that information in the database.
 
 ###Displaying Information From The DB
-
-Our views now have access to all of the ActiveRecord methods, like `Animal.all` and `Jungle.all`. We can call those methods in our views (in between erb tags) to display data from our database.
+Our views now have access to all of the ActiveRecord reader methods, like `@puma.name` and `@amazon.name`. We can call those methods in our views (in between erb tags) to display data from our database. 
 
 ###Tux
-
-All of this is sort of hard to visualize. How can we actually see what's in our database to even make sure we're saving data properly? There is an amazing gem called `tux` which opens up our database in the terminal and allows us to play around and call all sorts of ActiveRecord methdods. To use tux, in the directory where your database is located, you'll want to type `tux`. This command puts you into your database, so no command line commands will work.
+All of this is sort of hard to visualize. How can we actually see what's in our database to even make sure we're saving data properly? There is an amazing gem called `tux` which opens up our database in the terminal and allows us to play around and call all sorts of ActiveRecord methods. To use tux, in the directory where your database is located, you'll want to type `tux`. This command puts you into your database, so no command line commands will work.
 
 If we wanted to see all of the animals we've created, we can call `Animal.all`. And for all the jungles, `Jungle.all`. If we wanted to see the first animal we created `Animal.first`. 
-We can even do things like `Animal.where(:name => "Puma")`, where we're searching for an animal based a value in the name column. You can play around with methods here before attempting them in your views. 
+We can even do things like `Animal.where(:name => "Puma")`to search for an animal based on the value in the name column. You can play around with methods here before attempting them in your controllers. 
 
 To exit Tux, you just enter `exit`.
 
