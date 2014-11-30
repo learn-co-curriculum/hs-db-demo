@@ -1,8 +1,10 @@
 class CreateJungles < ActiveRecord::Migration
   def up
     create_table :jungles do |t|
-      t.string :name
-      t.string :location
+      t.string  :size
+      t.string  :name
+      t.string  :location
+      t.integer :rainfall
     end
   end
   
