@@ -1,9 +1,4 @@
----
-tags: kids, databases, db, activerecord, sinatra
-languages: ruby
-type: demo
-level: 3
----
+
 
 ##Persisting Data
 
