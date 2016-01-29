@@ -192,4 +192,4 @@ To exit Tux, you just enter `exit`.
 You can read more about ActiveRecord queries [here](http://guides.rubyonrails.org/active_record_querying.html).
 
 
-<a href='https://learn.co/lessons/hs-db-demo' data-visibility='hidden'>View this lesson on Learn.co</a>
+<p data-visibility='hidden'>View <a href='https://learn.co/lessons/hs-db-demo' title='Persisting Data'>Persisting Data</a> on Learn.co and start learning to code for free.</p>
